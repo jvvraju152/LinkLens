@@ -1,4 +1,4 @@
-# Cyber Solutions
+# LinkLens
 
 Paste a link, get a verdict with the evidence behind it. Flask backend, plain HTML/CSS/JS frontend, and a browser extension
 that checks links from the right-click menu.
