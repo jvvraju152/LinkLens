@@ -1,0 +1,27 @@
+# Caddy obtains and renews a Let's Encrypt certificate for {$DOMAIN} by itself and redirects HTTP to HTTPS.
+{$DOMAIN} {
+	encode zstd gzip
+
+	# The app accepts at most 16 KB; refuse anything bigger before it reaches Python.
+	request_body {
+		max_size 32KB
+	}
+
+	header {
+		-Server
+	}
+
+	reverse_proxy app:8000 {
+		# Take the app out of rotation if its data files stop being writable. /health is liveness, /ready is readiness.
+		health_uri /ready
+		health_interval 30s
+		health_timeout 5s
+	}
+
+	# One JSON line per request on stdout. NOTE: Caddy's log includes client IP addresses and URL paths with query
+	# strings (not request bodies, and cookies/authorization headers are redacted). Shorten retention accordingly.
+	log {
+		output stdout
+		format json
+	}
+}

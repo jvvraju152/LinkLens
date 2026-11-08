@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LinkLens Link Check</title>
+  <link rel="stylesheet" href="ui.css" />
+</head>
+<body class="popup">
+  <main class="wrap">
+    <h1>LinkLens</h1>
+    <p>Right-click a link and choose <b>Check link with LinkLens</b>. Right-click an empty part of a page to check the page itself.</p>
+    <p class="help">Only what you pick is checked. Nothing is checked automatically.</p>
+    <p id="server" class="help" role="status"><span id="dot" class="status-dot" aria-hidden="true"></span><span id="serverText">Checking the server…</span></p>
+    <div class="actions">
+      <button id="settingsBtn" type="button" class="btn btn-outline btn-sm">Settings</button>
+      <button id="openBtn" type="button" class="btn btn-ghost btn-sm">Open the scanner</button>
+    </div>
+  </main>
+  <script src="lib/common.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

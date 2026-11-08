@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Link check · LinkLens</title>
+  <link rel="stylesheet" href="ui.css" />
+</head>
+<body>
+  <main id="main" class="wrap">
+    <div class="brandbar">
+      <svg viewBox="0 0 32 32" aria-hidden="true" fill="none"><circle cx="16" cy="16" r="13" stroke="#3b82f6" stroke-width="2.5"/><path d="M16 2v3M16 27v3M2 16h3M27 16h3" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/><circle cx="16" cy="16" r="11" fill="#6366f1" fill-opacity="0.25"/><path d="M14.5 11.5L17 9a3.5 3.5 0 0 1 5 5l-2.5 2.5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.5 20.5L15 23a3.5 3.5 0 0 1-5-5l2.5-2.5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="13" y1="19" x2="19" y2="13" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/></svg>
+      LinkLens Link Check
+    </div>
+
+    <!-- Waiting for the server -->
+    <section id="pending" class="panel" role="status" hidden>
+      <p><span class="spinner" aria-hidden="true"></span>Checking this link…</p>
+      <p id="pendingUrl" class="url mono"></p>
+      <p class="help">The link is not being opened. Only its address is checked.</p>
+    </section>
+
+    <!-- The check could not be completed -->
+    <section id="error" class="panel" hidden>
+      <span class="badge">Not checked</span>
+      <h1 id="errorTitle" tabindex="-1">We couldn’t check this link</h1>
+      <p id="errorUrl" class="url mono" hidden></p>
+      <p id="errorText"></p>
+      <div class="actions">
+        <button id="retryBtn" type="button" class="btn btn-primary" hidden>Try again</button>
+        <button id="settingsBtn" type="button" class="btn btn-outline" hidden>Settings</button>
+        <button type="button" class="btn btn-ghost" data-close>Close</button>
+      </div>
+    </section>
+
+    <!-- A verdict -->
+    <section id="done" class="panel" hidden>
+      <div><span id="badge" class="badge"></span><span id="confirmedTag" class="tag" hidden>Confirmed by a threat database</span></div>
+      <h1 id="headline" tabindex="-1"></h1>
+      <p id="url" class="url mono"></p>
+      <p id="summary"></p>
+      <p id="advice" class="advice"></p>
+      <div id="evidenceBox">
+        <h2 class="small-h">What was found</h2>
+        <ul id="evidence" class="evidence"></ul>
+      </div>
+      <p id="sourceLine" class="help"></p>
+      <ul id="notes" class="notes"></ul>
+      <label id="ackRow" class="check" for="ack" hidden>
+        <input id="ack" type="checkbox" />
+        <span>I understand this link is listed as a threat, and I still want to open it.</span>
+      </label>
+      <div class="actions">
+        <button id="closeBtn" type="button" class="btn btn-primary" data-close>Close</button>
+        <button id="openBtn" type="button" class="btn btn-outline">Open anyway</button>
+      </div>
+    </section>
+
+    <!-- The result is gone (browser restarted, or it was cleared after an hour) -->
+    <section id="gone" class="panel" hidden>
+      <h1 id="goneTitle" tabindex="-1">This result is no longer available</h1>
+      <p>Results are kept only in memory, for a short time. Right-click the link and check it again.</p>
+      <div class="actions"><button type="button" class="btn btn-ghost" data-close>Close</button></div>
+    </section>
+  </main>
+
+  <script src="lib/common.js"></script>
+  <script src="result.js"></script>
+</body>
+</html>

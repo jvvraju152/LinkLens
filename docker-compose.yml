@@ -1,0 +1,60 @@
+# Cyber Solutions in production: the app plus Caddy, which terminates HTTPS and renews certificates automatically.
+#
+#   1. Point a DNS A/AAAA record for your domain at this server; open ports 80 and 443.
+#   2. cp deploy/production.env.example .env && chmod 600 .env   then set DOMAIN and your API key(s).
+#   3. docker compose up -d --build
+#   4. python tools/smoke_test.py https://your.domain
+#
+# Only Caddy publishes ports. The app is reachable from Caddy alone, never directly from the internet.
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:                                    # these win over .env on purpose: they are what makes HTTPS deployment safe
+      APP_ENV: production
+      TRUSTED_PROXY_COUNT: "1"                      # exactly one proxy (Caddy) in front
+      HSTS: "1"
+      COOKIE_SECURE: "1"
+      FLASK_DEBUG: "0"
+      CORS_ORIGINS: "https://${DOMAIN:?Set DOMAIN in .env}"
+    # To keep API keys out of the environment, create ./secrets/gsb_key (one line, chmod 600), uncomment the next four
+    # lines and the "secrets:" block at the bottom, and leave GOOGLE_SAFE_BROWSING_API_KEY empty in .env.
+    #   secrets: [gsb_key]
+    #   (add under environment:)  GOOGLE_SAFE_BROWSING_API_KEY_FILE: /run/secrets/gsb_key
+    volumes:
+      - appdata:/app/data                           # scan history + contact messages survive redeploys
+    expose:
+      - "8000"
+    read_only: true                                 # the image itself cannot be modified at run time
+    tmpfs:
+      - /tmp
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    depends_on:
+      app:
+        condition: service_healthy
+    environment:
+      DOMAIN: "${DOMAIN:?Set DOMAIN in .env}"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"                               # HTTP/3
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data                            # certificates: keep this volume or you will hit Let's Encrypt rate limits
+      - caddy_config:/config
+
+volumes:
+  appdata:
+  caddy_data:
+  caddy_config:
+
+# secrets:
+#   gsb_key:
+#     file: ./secrets/gsb_key

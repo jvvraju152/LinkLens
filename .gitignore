@@ -1,0 +1,47 @@
+# Secrets. Never commit these (deploy/production.env.example and .env.example are the committed templates).
+.env
+.env.*
+!.env.example
+secrets/
+*.pem
+*.key
+
+# Local data written while the app runs
+data/*.db
+data/*.db-journal
+data/*.sqlite*
+contact_messages.jsonl
+data/*.jsonl
+data/.contact-*.tmp
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+.venv/
+venv/
+
+# Node (the extension's tests need no packages, but a local install would create these)
+node_modules/
+
+# Logs and scratch files
+*.log
+logs/
+*.tmp
+*.bak
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Built archives of the project
+*.zip

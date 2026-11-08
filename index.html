@@ -1,0 +1,606 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LinkLens · URL Threat Intelligence & Link Scanner</title>
+  <meta name="description" content="Inspect links against real-time threat intelligence and URL heuristic models before you click." />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#09090b" media="(prefers-color-scheme: dark)" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="LinkLens" />
+  <meta property="og:title" content="LinkLens · URL Threat Intelligence & Link Scanner" />
+  <meta property="og:description" content="Inspect links against real-time threat intelligence and URL heuristic models before you click." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='none'%3E%3Ccircle cx='16' cy='16' r='13' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M16 2v3M16 27v3M2 16h3M27 16h3' stroke='%233b82f6' stroke-width='2.5' stroke-linecap='round'/%3E%3Ccircle cx='16' cy='16' r='11' fill='%236366f1' fill-opacity='0.25'/%3E%3Cpath d='M14.5 11.5L17 9a3.5 3.5 0 0 1 5 5l-2.5 2.5' stroke='%23ffffff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M17.5 20.5L15 23a3.5 3.5 0 0 1-5-5l2.5-2.5' stroke='%23ffffff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cline x1='13' y1='19' x2='19' y2='13' stroke='%233b82f6' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="theme.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#/scan" class="brand" aria-label="LinkLens home">
+        <span class="brand-icon" aria-hidden="true">
+          <svg viewBox="0 0 32 32" width="26" height="26" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="ll-grad" x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#3b82f6"/>
+                <stop offset="50%" stop-color="#6366f1"/>
+                <stop offset="100%" stop-color="#8b5cf6"/>
+              </linearGradient>
+              <linearGradient id="ll-lens" x1="4" y1="4" x2="28" y2="28" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#60a5fa" stop-opacity="0.2"/>
+                <stop offset="100%" stop-color="#a855f7" stop-opacity="0.05"/>
+              </linearGradient>
+            </defs>
+            <circle cx="16" cy="16" r="13" stroke="url(#ll-grad)" stroke-width="2" stroke-linecap="round"/>
+            <path d="M16 2v2.5M16 27.5V30M2 16h2.5M27.5 16H30" stroke="url(#ll-grad)" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="16" cy="16" r="11" fill="url(#ll-lens)"/>
+            <path d="M14.5 11.5L17 9a3.535 3.535 0 0 1 5 5l-2.5 2.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M17.5 20.5L15 23a3.535 3.535 0 0 1-5-5l2.5-2.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="13" y1="19" x2="19" y2="13" stroke="url(#ll-grad)" stroke-width="2.2" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="brand-name">Link<span class="brand-gradient">Lens</span></span>
+        <span class="brand-badge">v2.4 Live</span>
+      </a>
+
+      <!-- Navigation Tabs (Only Scanner & Dashboard) -->
+      <nav class="tabs" id="siteNav" aria-label="Main Navigation">
+        <a href="#/scan" data-route="scan" aria-current="page">Scanner</a>
+        <a href="#/history" data-route="history">Dashboard</a>
+      </nav>
+
+      <!-- Actions -->
+      <div class="header-actions">
+        <a href="#/extension" class="btn btn-outline btn-sm" aria-label="Browser Extension Setup">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+          </svg>
+          <span>Extension</span>
+        </a>
+        <button id="themeToggle" class="btn btn-ghost btn-icon" type="button" aria-label="Toggle theme">
+          <svg class="sun-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <svg class="moon-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+        <button id="navToggle" class="btn btn-ghost btn-icon nav-toggle" type="button" aria-expanded="false" aria-controls="siteNav" aria-label="Open menu">
+          <svg class="icon-open" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          <svg class="icon-close" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <noscript>
+      <div class="container" style="padding-top: 24px;">
+        <div class="alert alert-error">JavaScript is required to analyze links and render threat intelligence verdicts.</div>
+      </div>
+    </noscript>
+
+    <!-- Hidden compatibility elements required for script.js bindings -->
+    <div hidden aria-hidden="true">
+      <form id="heroForm"><input id="heroUrl" type="text" /><button type="submit">Scan</button></form>
+      <p id="heroError"></p>
+      <a href="#/scan" data-focus-scanner>Focus</a>
+      <button id="tryExample" type="button">Example</button>
+    </div>
+
+    <!-- ====================================================================
+         SCANNER VIEW (Primary Clean Workspace)
+         ==================================================================== -->
+    <section class="view" data-view="scan">
+      <div class="container narrow">
+        <div class="hero">
+          <div class="hero-pill">
+            <span class="pulse-dot"></span>
+            <span id="statusText">Threat Intel Engine Active</span>
+          </div>
+          <h1>URL Threat Intelligence & Phishing Scanner</h1>
+          <p class="lead">Inspect links against threat databases and behavioral heuristic models in real time before you click. Addresses are never opened.</p>
+
+          <!-- Modern Command Scan Box -->
+          <div class="scan-box-wrap">
+            <form id="scanForm" class="scan-form" novalidate>
+              <svg class="scan-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+              <label for="urlInput" class="sr-only">URL to scan</label>
+              <input id="urlInput" class="input mono" type="text" inputmode="url" placeholder="Paste any link to analyze (e.g. https://domain.com/login)..." autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="fieldError urlHelp scanPrivacy" />
+              <button id="scanBtn" class="btn btn-primary" type="submit">
+                <span>Scan URL</span>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </button>
+            </form>
+
+            <!-- Quick Presets -->
+            <div class="quick-chips">
+              <span class="quick-chips-label">Try quick samples:</span>
+              <button type="button" class="chip-btn" data-sample="https://paypal-secure-login.com/verify">Phishing Spoof</button>
+              <button type="button" class="chip-btn" data-sample="http://104.16.132.229/login">Raw IP Host</button>
+              <button type="button" class="chip-btn" data-sample="https://en.wikipedia.org/wiki/Computer_security">Clean Domain</button>
+            </div>
+          </div>
+
+          <p id="fieldError" class="field-error" role="alert" hidden></p>
+          <p id="serviceStatus" class="status" data-state="ok" role="status" hidden><span class="status-dot"></span></p>
+          <p id="urlHelp" class="help" hidden></p>
+          <p id="scanPrivacy" class="help" hidden></p>
+        </div>
+
+        <!-- Real-time Loading -->
+        <div id="loading" class="loading card" role="status" hidden>
+          <span class="spinner" aria-hidden="true"></span>
+          <span id="loadingText">Querying threat databases and heuristic models…</span>
+        </div>
+
+        <!-- ================= SCAN RESULT CARD ================= -->
+        <article id="result" class="card result" hidden aria-live="polite">
+          <header class="result-head">
+            <div class="verdict-header-left">
+              <div class="badge-row">
+                <span id="verdictBadge" class="badge"></span>
+                <span id="confirmedTag" class="tag" hidden></span>
+              </div>
+              <h2 id="verdictTitle"></h2>
+            </div>
+            <div class="score-box" id="scoreBox">
+              <span class="score-num" id="scoreNum">0</span>
+              <span class="score-of">Risk Score (3+ is Suspicious)</span>
+            </div>
+          </header>
+
+          <!-- Risk Meter Gauge -->
+          <div class="meter" aria-hidden="true">
+            <div id="meterFill" class="meter-fill"></div>
+          </div>
+
+          <!-- URL Bar with Copy Button -->
+          <div class="url-display-box">
+            <span id="resultUrl" class="result-url"></span>
+            <button id="copyResult" type="button" class="btn btn-secondary btn-sm" aria-label="Copy summary to clipboard">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+              <span>Copy summary</span>
+            </button>
+          </div>
+
+          <p id="verdictText" class="verdict-text"></p>
+          <p id="methodLine" class="method">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+            </svg>
+            <span id="methodText"></span>
+          </p>
+
+          <!-- Findings Grid: Threat Intelligence & Heuristics -->
+          <div class="findings-grid">
+            <section class="finding-group" aria-labelledby="intelHeading">
+              <div class="finding-group-header">
+                <h3 id="intelHeading">Threat Intelligence</h3>
+                <span id="intelStatus" class="badge badge-sm"></span>
+              </div>
+              <p id="intelSummary" class="group-note"></p>
+              <ul id="intelList" class="evidence"></ul>
+            </section>
+
+            <section class="finding-group" aria-labelledby="heurHeading">
+              <div class="finding-group-header">
+                <h3 id="heurHeading">Heuristic Signals</h3>
+                <span class="badge badge-sm badge-muted">Behavioral</span>
+              </div>
+              <p id="heurSummary" class="group-note"></p>
+              <ul id="heurList" class="evidence"></ul>
+            </section>
+          </div>
+
+          <p id="hostLine" class="intel"></p>
+          <p id="scannedAt" class="help"></p>
+
+          <!-- Action Controls -->
+          <div class="actions">
+            <button id="scanAnother" type="button" class="btn btn-primary btn-sm">Scan another link</button>
+            <button id="rescanBtn" type="button" class="btn btn-outline btn-sm" hidden>Re-scan</button>
+            <a href="#/history" class="btn btn-secondary btn-sm">View in Dashboard</a>
+          </div>
+          <span id="copyStatus" class="sr-only" role="status" aria-live="polite"></span>
+        </article>
+
+        <!-- Unverified / Error Card -->
+        <article id="unverified" class="card result" hidden>
+          <header class="result-head">
+            <div>
+              <span class="badge badge-muted">Unable to verify</span>
+              <h2>Lookup Could Not Complete</h2>
+            </div>
+          </header>
+          <p id="unverifiedText" class="verdict-text"></p>
+          <div class="actions">
+            <button id="retryBtn" type="button" class="btn btn-primary btn-sm">Retry Scan</button>
+          </div>
+        </article>
+
+        <!-- Browser Extension Download & Setup Instructions -->
+        <section class="extension-callout" aria-labelledby="extCalloutHeading">
+          <div class="ext-callout-header">
+            <div class="ext-callout-title">
+              <div class="ext-callout-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 7h-7m7 5h-7m7 5h-7M4 7h.01M4 12h.01M4 17h.01"/>
+                  <rect x="2" y="3" width="20" height="18" rx="3" ry="3"/>
+                </svg>
+              </div>
+              <div class="ext-callout-text">
+                <h3 id="extCalloutHeading">Browser Extension for Chrome, Edge & Brave</h3>
+                <p>Check links directly from your right-click context menu without opening this page.</p>
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+              <a href="/download-extension" class="btn btn-primary btn-sm" download="linklens-extension.zip" aria-label="Download Extension as ZIP">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="7 10 12 15 17 10"/>
+                  <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                <span>Download Extension (.zip)</span>
+              </a>
+              <a href="#/extension" class="btn btn-outline btn-sm">Full Setup</a>
+            </div>
+          </div>
+
+          <div class="ext-steps-grid">
+            <div class="ext-step-card">
+              <div class="ext-step-num">Step 1</div>
+              <p>Click <strong>Download Extension (.zip)</strong> and unzip the archive on your computer.</p>
+            </div>
+            <div class="ext-step-card">
+              <div class="ext-step-num">Step 2</div>
+              <p>Go to <code>chrome://extensions</code> (or <code>edge://extensions</code>) and turn on <strong>Developer mode</strong>.</p>
+            </div>
+            <div class="ext-step-card">
+              <div class="ext-step-num">Step 3</div>
+              <p>Click <strong>Load unpacked</strong> and select the unzipped folder. Right-click links to scan!</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- Compatibility Home View: Same Content as Scan -->
+    <section class="view" data-view="home" hidden>
+      <!-- Script redirects home to scan seamlessly -->
+    </section>
+
+    <!-- ====================================================================
+         DASHBOARD & RECENT SCANS VIEW
+         ==================================================================== -->
+    <section class="view" data-view="history" hidden>
+      <div class="container narrow">
+        <div class="dash-header">
+          <div>
+            <h1 class="page-title">Security Dashboard</h1>
+            <p id="historyNote" class="help">Recent scans and threat metrics saved for this browser.</p>
+          </div>
+          <div class="list-tools">
+            <a id="exportCsv" class="btn btn-outline btn-sm" href="#/history" download>Export CSV</a>
+            <a id="exportJson" class="btn btn-outline btn-sm" href="#/history" download>Export JSON</a>
+            <button id="clearHistory" type="button" class="btn btn-danger-outline btn-sm">Clear History</button>
+          </div>
+        </div>
+
+        <!-- KPI Stat Cards -->
+        <div id="dashStats" hidden>
+          <ul class="stat-grid" aria-label="Threat metrics">
+            <li class="stat card">
+              <span class="stat-label">Total Scans</span>
+              <b id="statTotal" class="stat-num">0</b>
+            </li>
+            <li class="stat card">
+              <span class="stat-label">Flagged Threats <span class="stat-sub">Suspicious & Malicious</span></span>
+              <b id="statFlagged" class="stat-num">0</b>
+            </li>
+            <li class="stat card">
+              <span class="stat-label">Confirmed Threats <span class="stat-sub">Database Hit</span></span>
+              <b id="statConfirmed" class="stat-num">0</b>
+            </li>
+            <li class="stat card">
+              <span class="stat-label">Last Activity</span>
+              <b id="statLast" class="stat-text">None</b>
+            </li>
+          </ul>
+
+          <div class="dash-panels">
+            <section class="card pad" aria-labelledby="verdictHeading">
+              <h2 id="verdictHeading" class="panel-title">Verdict Distribution</h2>
+              <div id="verdictBar" class="stack" aria-hidden="true"></div>
+              <ul id="verdictLegend" class="legend"></ul>
+            </section>
+            <section class="card pad" aria-labelledby="dayHeading">
+              <h2 id="dayHeading" class="panel-title">14-Day Timeline</h2>
+              <ul id="dayChart" class="bars"></ul>
+              <p class="chart-key"><span class="key key-all"></span>Total <span class="key key-flagged"></span>Flagged</p>
+            </section>
+            <section class="card pad" aria-labelledby="sourceHeading">
+              <h2 id="sourceHeading" class="panel-title">Matched Feeds</h2>
+              <ul id="sourceList" class="source-list"></ul>
+              <p id="sourceEmpty" class="help" hidden>No database listings yet.</p>
+            </section>
+          </div>
+        </div>
+
+        <!-- Filter & Search Bar -->
+        <button id="filtersToggle" type="button" class="btn btn-outline filters-toggle" aria-expanded="false" aria-controls="historyFilters" hidden>
+          <span>Filters</span>
+          <span id="filtersCount" class="badge badge-sm" hidden>0</span>
+        </button>
+
+        <form id="historyFilters" class="filters card pad" role="search" aria-label="Search and filter your scans" novalidate>
+          <div class="field f-search">
+            <label for="fSearch">Search Scans</label>
+            <input id="fSearch" class="input" type="search" placeholder="Search URL, domain or threat source..." maxlength="100" autocomplete="off" spellcheck="false" />
+          </div>
+          <fieldset class="field f-verdict">
+            <legend class="sr-only">Verdict Filter</legend>
+            <div class="chips">
+              <label class="chip"><input type="checkbox" name="verdict" value="malicious" /><span>Malicious</span></label>
+              <label class="chip"><input type="checkbox" name="verdict" value="suspicious" /><span>Suspicious</span></label>
+              <label class="chip"><input type="checkbox" name="verdict" value="no_known_threat" /><span>Clear</span></label>
+              <label class="chip"><input type="checkbox" name="verdict" value="unable_to_verify" /><span>Unverified</span></label>
+            </div>
+          </fieldset>
+          <div class="field">
+            <label for="fSource">Source</label>
+            <select id="fSource" class="input"><option value="">All Sources</option></select>
+          </div>
+          <div class="field">
+            <label for="fDays">Time</label>
+            <select id="fDays" class="input">
+              <option value="">All time</option>
+              <option value="1">24 hours</option>
+              <option value="7">7 days</option>
+              <option value="30">30 days</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="fSort">Sort</label>
+            <select id="fSort" class="input">
+              <option value="newest">Newest</option>
+              <option value="oldest">Oldest</option>
+              <option value="risk">Highest Risk</option>
+            </select>
+          </div>
+          <div class="field f-check">
+            <label class="check" for="fConfirmed">
+              <input id="fConfirmed" type="checkbox" />
+              <span>Confirmed only</span>
+            </label>
+          </div>
+          <div class="f-actions">
+            <button id="filterReset" type="button" class="btn btn-ghost btn-sm" hidden>Reset</button>
+          </div>
+        </form>
+
+        <div class="list-head">
+          <p id="historyCount" class="help" role="status" aria-live="polite"></p>
+        </div>
+        <p id="historyStatus" class="alert" role="status" hidden></p>
+
+        <!-- Empty States -->
+        <div id="historyEmpty" class="empty card" hidden>
+          <h3>No Scans Recorded</h3>
+          <p>Scan a link to inspect its threat profile and track it in this dashboard.</p>
+          <div style="margin-top: 16px;">
+            <a href="#/scan" class="btn btn-primary btn-sm">Scan a URL</a>
+          </div>
+        </div>
+        <div id="historyNoMatch" class="empty card" hidden>
+          <h3>No Matching Records</h3>
+          <p>No scans match your current filter parameters.</p>
+          <div style="margin-top: 16px;">
+            <button id="noMatchReset" type="button" class="btn btn-outline btn-sm">Reset filters</button>
+          </div>
+        </div>
+
+        <!-- History Items -->
+        <ul id="historyList" class="history"></ul>
+        <div class="more">
+          <button id="historyMore" type="button" class="btn btn-outline btn-sm" hidden>Load more</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         THREAT ENGINE & HOW IT WORKS VIEW
+         ==================================================================== -->
+    <section class="view" data-view="how" hidden>
+      <div class="container narrow prose">
+        <h1>Threat Engine & Heuristic Architecture</h1>
+        <p class="lead">LinkLens combines real-time threat intelligence lookup with static URL heuristic parsing. Addresses are parsed locally and verified without executing browser code or following redirects.</p>
+
+        <h2>Verdict Classification</h2>
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr><th>Verdict</th><th>Classification Basis</th><th>Security Impact</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="badge badge-danger">Malicious</span></td>
+                <td>Active listing in Google Safe Browsing or abuse.ch URLhaus</td>
+                <td>Critical danger. Known malware, phishing or credential harvester.</td>
+              </tr>
+              <tr>
+                <td><span class="badge badge-warn">Suspicious</span></td>
+                <td>Accumulated behavioral risk score ≥ 3</td>
+                <td>High risk. Structural anomalies, lookalikes, brand spoofing detected.</td>
+              </tr>
+              <tr>
+                <td><span class="badge badge-ok">No Threat</span></td>
+                <td>Feed verified clear & risk score &lt; 3</td>
+                <td>No active indicators found. Always verify unknown senders.</td>
+              </tr>
+              <tr>
+                <td><span class="badge badge-muted">Unverified</span></td>
+                <td>Feed connection timeout or missing credentials</td>
+                <td>Inconclusive. Threat feeds could not provide definitive signal.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Heuristic Risk Scoring Breakdown</h2>
+        <p>Heuristic rules assign additive points based on deceptive URL architecture:</p>
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr><th>Signal Pattern</th><th>Risk Score</th><th>Security Threat</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Disguised or Obfuscated IP</td><td>+4</td><td>Attempts to evade IP blacklists</td></tr>
+              <tr><td>Raw IP Host or "@" Credential Syntax</td><td>+3</td><td>Direct socket bypass / credential confusion</td></tr>
+              <tr><td>Brand Name Domain Spoofing / Lookalikes</td><td>+3</td><td>Impersonation of established trusted services</td></tr>
+              <tr><td>Embedded Deceptive Target URL</td><td>+3</td><td>Open redirect abuse</td></tr>
+              <tr><td>Multi-Token Urgency / Sensitive Sign-in Words</td><td>+2</td><td>Phishing pretexting (verify, auth, secure)</td></tr>
+              <tr><td>Punycode / Homograph Character Substitution</td><td>+2</td><td>Visual spoofing of characters</td></tr>
+              <tr><td>Risky High-Abuse TLDs (.top, .xyz, .buzz)</td><td>+1</td><td>High-disposable infrastructure</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Measured Benchmark Performance</h2>
+        <p>Measured directly against independent holdout sets with <code>evaluate.py</code>:</p>
+        <div id="evalBox" class="card pad" style="margin-top: 14px;" aria-live="polite">
+          <p class="help">Loading engine evaluation data…</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         BROWSER EXTENSION VIEW
+         ==================================================================== -->
+    <section class="view" data-view="extension" hidden>
+      <div class="container narrow prose">
+        <h1>Chromium Browser Extension</h1>
+        <p class="lead">Inspect links on-the-fly without leaving your active tab. Right-click any link to perform an instant threat analysis.</p>
+
+        <div class="card pad" style="margin: 24px 0; display: flex; flex-direction: column; gap: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+            <div>
+              <h3 style="font-size: 16px; font-weight: 600; margin: 0 0 4px 0;">Download Extension Package</h3>
+              <p style="font-size: 14px; color: var(--muted-foreground); margin: 0;">Ready-to-use ZIP archive containing all extension assets for Chrome, Edge, and Brave.</p>
+            </div>
+            <a href="/download-extension" class="btn btn-primary" download="linklens-extension.zip">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              <span>Download Extension (.zip)</span>
+            </a>
+          </div>
+
+          <hr style="border: none; border-top: 1px solid var(--border); margin: 4px 0;">
+
+          <div>
+            <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">Installation Instructions</h3>
+            <ol style="margin-left: 20px; display: grid; gap: 10px; font-size: 14px;">
+              <li>Click the <strong>Download Extension (.zip)</strong> button above and extract (unzip) the archive on your computer.</li>
+              <li>Navigate to <code>chrome://extensions</code> (or <code>edge://extensions</code> in Edge).</li>
+              <li>Enable <strong>Developer mode</strong> using the toggle switch in the top-right corner.</li>
+              <li>Click <strong>Load unpacked</strong> and select the extracted extension folder.</li>
+              <li>Ensure the extension server address is set to: <code id="extServerOrigin" class="mono">http://127.0.0.1:5000</code></li>
+              <li>Right-click any link on any web page and select <strong>"Check link with LinkLens"</strong>.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         PRIVACY VIEW
+         ==================================================================== -->
+    <section class="view" data-view="privacy" hidden>
+      <div class="container narrow prose">
+        <h1>Privacy & Data Handling</h1>
+        <p class="lead">LinkLens is designed privacy-first. We do not track users, do not require accounts, and never visit or execute target URLs.</p>
+        <div id="privacyBox" class="card pad" style="margin-top: 24px;">
+          <p class="help">Loading privacy configurations…</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         CONTACT & SUPPORT VIEW
+         ==================================================================== -->
+    <section class="view" data-view="contact" hidden>
+      <div class="container narrow">
+        <h1 class="page-title">Contact & Security Reporting</h1>
+        <p class="help" style="margin-top: 6px;">Questions, false positives, or threat submissions.</p>
+
+        <form id="contactForm" class="card pad form" style="margin-top: 24px;" novalidate>
+          <div class="field">
+            <label for="cName">Your Name</label>
+            <input id="cName" name="name" class="input" type="text" autocomplete="name" maxlength="100" required aria-describedby="cerr-name" />
+            <p class="field-error" id="cerr-name" data-error-for="name" hidden></p>
+          </div>
+          <div class="field">
+            <label for="cEmail">Email Address</label>
+            <input id="cEmail" name="email" class="input" type="email" autocomplete="email" maxlength="200" required aria-describedby="cerr-email" />
+            <p class="field-error" id="cerr-email" data-error-for="email" hidden></p>
+          </div>
+          <div class="field">
+            <label for="cMessage">Message</label>
+            <textarea id="cMessage" name="message" class="input" rows="4" maxlength="2000" required aria-describedby="msgCount cerr-message"></textarea>
+            <p id="msgCount" class="help">0 / 2000</p>
+            <p class="field-error" id="cerr-message" data-error-for="message" hidden></p>
+          </div>
+          <div class="hp" aria-hidden="true" style="display: none;">
+            <label for="cWebsite">Website</label>
+            <input id="cWebsite" name="website" type="text" tabindex="-1" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label class="check" for="cConsent">
+              <input id="cConsent" name="consent" type="checkbox" required aria-describedby="cerr-consent" />
+              <span>I agree to store this submission for <span id="consentDays">30 days</span> to receive support.</span>
+            </label>
+            <p class="field-error" id="cerr-consent" data-error-for="consent" hidden></p>
+          </div>
+          <div id="contactStatus" class="alert" role="status" hidden></div>
+          <button id="contactBtn" type="submit" class="btn btn-primary btn-sm" style="width: fit-content;">Send Message</button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>© 2026 LinkLens · Real-time Threat Intelligence</span>
+      <nav class="footer-nav" aria-label="Documentation & Information Links">
+        <a href="#/how">Threat Detection Methodology</a>
+        <a href="#/privacy">Privacy Policy</a>
+        <a href="#/contact">Security & Support</a>
+        <a href="#/extension">Extension Guide</a>
+      </nav>
+      <span>Advice only · Always verify credentials directly with service providers</span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

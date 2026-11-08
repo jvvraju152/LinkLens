@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Settings · LinkLens Link Check</title>
+  <link rel="stylesheet" href="ui.css" />
+</head>
+<body>
+  <main class="wrap">
+    <div class="brandbar">
+      <svg viewBox="0 0 32 32" aria-hidden="true" fill="none"><circle cx="16" cy="16" r="13" stroke="#3b82f6" stroke-width="2.5"/><path d="M16 2v3M16 27v3M2 16h3M27 16h3" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/><circle cx="16" cy="16" r="11" fill="#6366f1" fill-opacity="0.25"/><path d="M14.5 11.5L17 9a3.5 3.5 0 0 1 5 5l-2.5 2.5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.5 20.5L15 23a3.5 3.5 0 0 1-5-5l2.5-2.5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="13" y1="19" x2="19" y2="13" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/></svg>
+      LinkLens Link Check
+    </div>
+    <h1>Settings</h1>
+
+    <form id="form" class="panel" novalidate>
+      <div>
+        <label class="field" for="backend">LinkLens server</label>
+        <input id="backend" class="input mono" type="text" inputmode="url" autocomplete="off" spellcheck="false" aria-describedby="backendHelp" />
+        <p id="backendHelp" class="help">An https:// address, or http:// on this computer. The default is the local server, <span class="mono">http://127.0.0.1:5000</span>. The extension can only talk to the server named here.</p>
+      </div>
+      <label class="check" for="stripQuery">
+        <input id="stripQuery" type="checkbox" />
+        <span>Leave out the part after “?” when checking a link</span>
+      </label>
+      <p class="help">Links in emails often carry private tokens after the “?”. Leaving it out keeps them to yourself, but a few exact matches in the threat databases may be missed. The part after “#” is never sent.</p>
+      <div class="actions">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button id="testBtn" type="button" class="btn btn-outline">Test connection</button>
+        <button id="resetBtn" type="button" class="btn btn-ghost">Reset to default</button>
+      </div>
+      <p id="status" class="alert" role="status" hidden></p>
+    </form>
+
+    <section class="panel" aria-labelledby="allowHeading">
+      <h2 id="allowHeading">Allow this extension on your server</h2>
+      <p>A server only accepts checks from extensions it lists. If a check says the server doesn’t allow this extension, add this to the server’s <span class="mono">.env</span> file and restart it:</p>
+      <pre id="envLine" class="env"></pre>
+      <div class="actions"><button id="copyBtn" type="button" class="btn btn-outline btn-sm">Copy</button></div>
+      <p class="help">The default server settings already list this extension when it is loaded from the project folder.</p>
+    </section>
+
+    <section class="panel" aria-labelledby="privHeading">
+      <h2 id="privHeading">What this extension does with your data</h2>
+      <ul class="notes">
+        <li>It checks only the links and pages you pick from the right-click menu. It does not watch your browsing.</li>
+        <li>It sends that one address (without the part after “#”) to your server. The link is never opened or fetched by the extension.</li>
+        <li>It stores your two settings above. The current result is held in memory until you close the browser, for at most an hour.</li>
+        <li>Your server decides what is sent on to threat databases and does not save these checks in scan history.</li>
+      </ul>
+    </section>
+  </main>
+  <script src="lib/common.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

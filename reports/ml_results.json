@@ -1,0 +1,314 @@
+{
+  "train": {
+    "rows": 6000,
+    "phishing": 3000,
+    "benign": 3000,
+    "skipped": 0,
+    "groups": 5832,
+    "file": "feed_train.csv",
+    "sha256": "5bed13d73383d8b5bb6484af220acf3b5e448a2eafe602bab217082aa1174c84"
+  },
+  "test": {
+    "rows": 1754,
+    "phishing": 254,
+    "benign": 1500,
+    "skipped": 0,
+    "groups": 1735,
+    "file": "feed_test.csv",
+    "sha256": "b343153f152981a08dbde156522e29386764f0478c704a54505803bc8bff7f39"
+  },
+  "selected": {
+    "C": 0.1,
+    "hashed_3grams": true,
+    "grouped_cv_auc": 0.8812863333333334,
+    "threshold": 0.7877044608579715,
+    "oof_fpr": 0.01,
+    "oof_recall": 0.592
+  },
+  "leakage": {
+    "random_cv_auc": 0.8870536666666666,
+    "grouped_cv_auc": 0.8812863333333334,
+    "shuffled_label_auc": 0.5027145555555556,
+    "univariate_auc": {
+      "host_len": 0.8174202222222222,
+      "domain_len": 0.5141095555555555,
+      "hyphens": 0.6433293888888889,
+      "domain_entropy": 0.5193167222222222
+    }
+  },
+  "confound": {
+    "train": {
+      "phishing": 0.544,
+      "benign": 0.012
+    },
+    "test": {
+      "phishing": 0.7913385826771654,
+      "benign": 0.007333333333333333
+    }
+  },
+  "grid": [
+    {
+      "C": 0.03,
+      "hashed_3grams": false,
+      "grouped_cv_auc": 0.8672572222222222
+    },
+    {
+      "C": 0.1,
+      "hashed_3grams": false,
+      "grouped_cv_auc": 0.8718553333333334
+    },
+    {
+      "C": 0.3,
+      "hashed_3grams": false,
+      "grouped_cv_auc": 0.8745402222222222
+    },
+    {
+      "C": 1.0,
+      "hashed_3grams": false,
+      "grouped_cv_auc": 0.8753078888888889
+    },
+    {
+      "C": 0.03,
+      "hashed_3grams": true,
+      "grouped_cv_auc": 0.8785853333333333
+    },
+    {
+      "C": 0.1,
+      "hashed_3grams": true,
+      "grouped_cv_auc": 0.8812863333333334
+    },
+    {
+      "C": 0.3,
+      "hashed_3grams": true,
+      "grouped_cv_auc": 0.8769282222222221
+    },
+    {
+      "C": 1.0,
+      "hashed_3grams": true,
+      "grouped_cv_auc": 0.867459111111111
+    }
+  ],
+  "gates": {
+    "enough_test_data": true,
+    "recall_gain": true,
+    "fpr_ceiling": true,
+    "holdout_guard": false,
+    "no_leakage_signs": true
+  },
+  "adopted": false,
+  "test_conf": {
+    "rules": {
+      "tp": 3,
+      "fp": 1,
+      "tn": 1499,
+      "fn": 251,
+      "n": 1754,
+      "positives": 254,
+      "negatives": 1500,
+      "precision": 0.75,
+      "recall": 0.011811023622047244,
+      "f1": 0.023255813953488372,
+      "fpr": 0.0006666666666666666,
+      "accuracy": 0.8563283922462942,
+      "precision_ci": [
+        0.3006360524426366,
+        0.9544139373553637
+      ],
+      "recall_ci": [
+        0.004024720055418941,
+        0.03414445047408444
+      ],
+      "fpr_ci": [
+        0.00011768970416585435,
+        0.0037667619561685853
+      ]
+    },
+    "hybrid": {
+      "tp": 210,
+      "fp": 14,
+      "tn": 1486,
+      "fn": 44,
+      "n": 1754,
+      "positives": 254,
+      "negatives": 1500,
+      "precision": 0.9375,
+      "recall": 0.8267716535433071,
+      "f1": 0.8786610878661089,
+      "fpr": 0.009333333333333334,
+      "accuracy": 0.9669327251995439,
+      "precision_ci": [
+        0.8978378746508757,
+        0.9624088932791248
+      ],
+      "recall_ci": [
+        0.7754536007570969,
+        0.8683525189691226
+      ],
+      "fpr_ci": [
+        0.005567713389794795,
+        0.015605793181641986
+      ]
+    },
+    "model": {
+      "tp": 209,
+      "fp": 14,
+      "tn": 1486,
+      "fn": 45,
+      "n": 1754,
+      "positives": 254,
+      "negatives": 1500,
+      "precision": 0.9372197309417041,
+      "recall": 0.8228346456692913,
+      "f1": 0.8763102725366876,
+      "fpr": 0.009333333333333334,
+      "accuracy": 0.9663625997719498,
+      "precision_ci": [
+        0.8973920239920107,
+        0.962238661032253
+      ],
+      "recall_ci": [
+        0.7711729330684065,
+        0.8648764864201477
+      ],
+      "fpr_ci": [
+        0.005567713389794795,
+        0.015605793181641986
+      ]
+    }
+  },
+  "bootstrap": {
+    "delta_recall": 0.8149606299212598,
+    "delta_recall_ci": [
+      0.7677165354330708,
+      0.8661417322834646
+    ],
+    "delta_fpr": 0.008666666666666668,
+    "delta_fpr_ci": [
+      0.004666666666666666,
+      0.013999999999999999
+    ]
+  },
+  "bands": {
+    "top-sites-a": {
+      "rules": 0.002,
+      "hybrid": 0.006,
+      "model": 0.006,
+      "n": 500
+    },
+    "top-sites-b": {
+      "rules": 0.0,
+      "hybrid": 0.008,
+      "model": 0.008,
+      "n": 500
+    },
+    "top-sites-c": {
+      "rules": 0.0,
+      "hybrid": 0.014,
+      "model": 0.014,
+      "n": 500
+    }
+  },
+  "test_auc": 0.9429370078740157,
+  "full_url_phish": {
+    "n": 254,
+    "rules": 3,
+    "hybrid": 210
+  },
+  "scorer_max_abs_diff_vs_sklearn": 4.440892098500626e-16,
+  "L": {
+    "sklearn": "1.8.0",
+    "numpy": "2.4.4"
+  },
+  "holdout": {
+    "n": 323,
+    "conf": {
+      "rules": {
+        "tp": 90,
+        "fp": 7,
+        "tn": 151,
+        "fn": 75,
+        "n": 323,
+        "positives": 165,
+        "negatives": 158,
+        "precision": 0.9278350515463918,
+        "recall": 0.5454545454545454,
+        "f1": 0.6870229007633587,
+        "fpr": 0.04430379746835443,
+        "accuracy": 0.7461300309597523,
+        "precision_ci": [
+          0.85846672545683,
+          0.9646062920280175
+        ],
+        "recall_ci": [
+          0.4693055432797876,
+          0.6195351215800574
+        ],
+        "fpr_ci": [
+          0.02162368008397879,
+          0.08861744457123964
+        ]
+      },
+      "hybrid": {
+        "tp": 129,
+        "fp": 36,
+        "tn": 122,
+        "fn": 36,
+        "n": 323,
+        "positives": 165,
+        "negatives": 158,
+        "precision": 0.7818181818181819,
+        "recall": 0.7818181818181819,
+        "f1": 0.7818181818181819,
+        "fpr": 0.22784810126582278,
+        "accuracy": 0.7770897832817337,
+        "precision_ci": [
+          0.7127783138933665,
+          0.8380338082376724
+        ],
+        "recall_ci": [
+          0.7127783138933665,
+          0.8380338082376724
+        ],
+        "fpr_ci": [
+          0.16936333305503432,
+          0.29925289416961004
+        ]
+      },
+      "model": {
+        "tp": 88,
+        "fp": 32,
+        "tn": 126,
+        "fn": 77,
+        "n": 323,
+        "positives": 165,
+        "negatives": 158,
+        "precision": 0.7333333333333333,
+        "recall": 0.5333333333333333,
+        "f1": 0.6175438596491227,
+        "fpr": 0.20253164556962025,
+        "accuracy": 0.6625386996904025,
+        "precision_ci": [
+          0.6478739437150142,
+          0.8043165964588853
+        ],
+        "recall_ci": [
+          0.4573189068484033,
+          0.6078309140488163
+        ],
+        "fpr_ci": [
+          0.1472736756110395,
+          0.2719115029833392
+        ]
+      }
+    },
+    "extra_false_positives": 29
+  },
+  "gate_definitions": {
+    "enough_test_data": "at least 100 phishing and 500 benign test rows",
+    "recall_gain": "hybrid recall exceeds rules-only recall by >= 5 points, paired-bootstrap 95% interval above 0",
+    "fpr_ceiling": "hybrid false-positive rate on the test set: 95% Wilson upper bound <= 3.0%",
+    "holdout_guard": "on the author's independent holdout, the hybrid adds at most 1 false positive over the rules",
+    "no_leakage_signs": "grouped-CV AUC within 0.03 of random-CV AUC, and AUC with shuffled labels within 0.45-0.55"
+  },
+  "rules_sha256": "73fde9d8c36fd6ca447ee638a312697b2bd1baaa50c710b2499c005be57940cc"
+}

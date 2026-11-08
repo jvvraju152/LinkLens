@@ -1,0 +1,10 @@
+# Cyber Solutions: the site is a single page; the API paths below are not meant to be crawled.
+User-agent: *
+Allow: /$
+Disallow: /scan
+Disallow: /history
+Disallow: /contact
+Disallow: /evaluation
+Disallow: /privacy
+Disallow: /ready
+Disallow: /metrics

@@ -1,0 +1,43 @@
+{
+  "manifest_version": 3,
+  "name": "LinkLens Link Check",
+  "short_name": "LinkLens",
+  "version": "1.0.0",
+  "description": "Right-click a link or page to inspect it with LinkLens for phishing and malware before you open it.",
+  "minimum_chrome_version": "110",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvXLmnrHNu2WpTaqXVOTlF35ELwCDKQI0N4QqZgRx2zyN75O+phsYIICEgRowLYwtTnS8AEkF8xzaZSKW4nhz1G93LBcCVJtJ72S4/qK1zySlrHjh6Rwo+0dZ9+PpX2/8WbLqm8/8TB11iOXrmUS2F1ta6NjIR+sUjXS7I17qAG3kyDYy/Vhhgaax7wmINv9zDxxG9IlAY9tl1MssrLj7fMve7szSQtgPWCd4DtTSVklUYnmey5mWtJ2YjenelzMD/kjQck6lQduAVNAJMuC088EZdCLFbru8u9uCXLqAQsj4AfZGNnCFHCkd1FOJGELwu++KwyVS+rWlq8IwP+QbZQIDAQAB",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "LinkLens Link Check",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "permissions": [
+    "contextMenus",
+    "storage"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1:5000/*",
+    "http://localhost:5000/*"
+  ],
+  "optional_host_permissions": [
+    "https://*/*",
+    "http://127.0.0.1/*",
+    "http://localhost/*"
+  ]
+}
